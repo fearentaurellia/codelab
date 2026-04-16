@@ -4,13 +4,14 @@ void main() {
   runApp(const MyApp());
 }
 
+// ROOT APP
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Functionality',
+      title: 'Navigation Rail Demo',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
@@ -21,7 +22,7 @@ class MyApp extends StatelessWidget {
   }
 }
 
-// Home Page
+// MAIN PAGE
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
 
@@ -29,68 +30,60 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
-// State
+// STATE
 class _MyHomePageState extends State<MyHomePage> {
-  String text = "Hello World";
-
-  bool isFavorite = false;
-
-  void updateText() {
-    setState(() {
-      text = "Button Pressed";
-    });
-  }
-
-  void toggleFavorite() {
-    setState(() {
-      isFavorite = !isFavorite;
-    });
-  }
+  int selectedIndex = 0;
 
   @override
   Widget build(BuildContext context) {
+    // menentukan isi halaman
+    Widget content;
+    switch (selectedIndex) {
+      case 0:
+        content = const Text("Home Page", style: TextStyle(fontSize: 24));
+        break;
+      case 1:
+        content = const Text("Favorite Page", style: TextStyle(fontSize: 24));
+        break;
+      default:
+        content = const Text("Home Page");
+    }
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Add Functionality"),
-        backgroundColor: Theme.of(context).colorScheme.primary,
-        foregroundColor: Colors.white,
+        title: const Text("Step 4 - Navigation Rail"),
       ),
 
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(24.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              // TEXT
-              Text(
-                text,
-                style: Theme.of(context).textTheme.headlineMedium,
-                textAlign: TextAlign.center,
+      body: Row(
+        children: [
+          // SIDEBAR
+          NavigationRail(
+            selectedIndex: selectedIndex,
+            onDestinationSelected: (int index) {
+              setState(() {
+                selectedIndex = index;
+              });
+            },
+            labelType: NavigationRailLabelType.all,
+            destinations: const [
+              NavigationRailDestination(
+                icon: Icon(Icons.home),
+                label: Text('Home'),
               ),
-
-              const SizedBox(height: 30),
-
-              // BUTTON 1 (ubah text)
-              ElevatedButton(
-                onPressed: updateText,
-                child: const Text("Click Me"),
-              ),
-
-              const SizedBox(height: 20),
-
-              // BUTTON 2 (favorite toggle)
-              IconButton(
-                onPressed: toggleFavorite,
-                icon: Icon(
-                  isFavorite ? Icons.favorite : Icons.favorite_border,
-                  color: Colors.red,
-                  size: 32,
-                ),
+              NavigationRailDestination(
+                icon: Icon(Icons.favorite),
+                label: Text('Favorite'),
               ),
             ],
           ),
-        ),
+
+          const VerticalDivider(width: 1),
+
+          // KONTEN
+          Expanded(
+            child: Center(child: content),
+          ),
+        ],
       ),
     );
   }
