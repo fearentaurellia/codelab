@@ -9,13 +9,19 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: MyHomePage(),
+    return MaterialApp(
+      title: 'Flutter Pretty App',
       debugShowCheckedModeBanner: false,
+
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        useMaterial3: true,
+      ),
+
+      home: const MyHomePage(),
     );
   }
 }
-
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
 
@@ -23,30 +29,51 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
+// State
 class _MyHomePageState extends State<MyHomePage> {
   String text = "Hello World";
 
   void updateText() {
     setState(() {
-      text = "Button Pressed 🚀";
+      text = "Button Pressed";
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Add Button")),
+      appBar: AppBar(
+        title: const Text("Pretty App"),
+        backgroundColor: Theme.of(context).colorScheme.primary,
+        foregroundColor: Colors.white,
+      ),
+
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(text),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: updateText,
-              child: const Text("Click Me"),
-            ),
-          ],
+        child: Padding(
+          padding: const EdgeInsets.all(24.0), // spacing biar lega
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                text,
+                style: Theme.of(context).textTheme.headlineMedium,
+                textAlign: TextAlign.center,
+              ),
+
+              const SizedBox(height: 30),
+
+              ElevatedButton(
+                onPressed: updateText,
+                style: ElevatedButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 24,
+                    vertical: 12,
+                  ),
+                ),
+                child: const Text("Click Me"),
+              ),
+            ],
+          ),
         ),
       ),
     );
