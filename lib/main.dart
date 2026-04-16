@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'home_page.dart';
+import 'favorite_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -11,7 +13,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Navigation Rail Demo',
+      title: 'Flutter Multi Page',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
@@ -22,7 +24,7 @@ class MyApp extends StatelessWidget {
   }
 }
 
-// MAIN PAGE
+// MAIN PAGE (Navigation Controller)
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
 
@@ -30,33 +32,32 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
-// STATE
 class _MyHomePageState extends State<MyHomePage> {
   int selectedIndex = 0;
 
   @override
   Widget build(BuildContext context) {
-    // menentukan isi halaman
-    Widget content;
+    // pilih halaman berdasarkan index
+    Widget page;
     switch (selectedIndex) {
       case 0:
-        content = const Text("Home Page", style: TextStyle(fontSize: 24));
+        page = const HomePage();
         break;
       case 1:
-        content = const Text("Favorite Page", style: TextStyle(fontSize: 24));
+        page = const FavoritePage();
         break;
       default:
-        content = const Text("Home Page");
+        page = const HomePage();
     }
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Step 4 - Navigation Rail"),
+        title: const Text("Step 5 - Multi Page"),
       ),
 
       body: Row(
         children: [
-          // SIDEBAR
+          // NavigationRail
           NavigationRail(
             selectedIndex: selectedIndex,
             onDestinationSelected: (int index) {
@@ -68,20 +69,20 @@ class _MyHomePageState extends State<MyHomePage> {
             destinations: const [
               NavigationRailDestination(
                 icon: Icon(Icons.home),
-                label: Text('Home'),
+                label: Text("Home"),
               ),
               NavigationRailDestination(
                 icon: Icon(Icons.favorite),
-                label: Text('Favorite'),
+                label: Text("Favorite"),
               ),
             ],
           ),
 
           const VerticalDivider(width: 1),
 
-          // KONTEN
+          // Konten halaman
           Expanded(
-            child: Center(child: content),
+            child: page,
           ),
         ],
       ),
